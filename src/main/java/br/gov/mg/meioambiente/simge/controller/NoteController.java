@@ -26,16 +26,18 @@ import br.gov.mg.meioambiente.simge.exception.DataFormatException;
 import br.gov.mg.meioambiente.simge.service.NoteService;
 
 
-@RestController
-@RequestMapping(value = "note")
-public class NoteController extends BaseRestController<Note, Long> {
+//@RestController
+//@RequestMapping(value = "note")
+public class NoteController /*extends BaseRestController<Note, Long> */{
 	
+	/*
 	private static final Logger LOGGER = LoggerFactory.getLogger(NoteController.class);	
 
 	private final NoteService noteService;
 
 	@Autowired
 	public NoteController(NoteService noteService) {
+		super(noteService);
 		this.noteService = noteService;
 	}
 
@@ -108,6 +110,7 @@ public class NoteController extends BaseRestController<Note, Long> {
 	 * 
 	 */
 
+	/*
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = { "application/json", "application/xml" })
 	@ResponseStatus(HttpStatus.OK)
@@ -117,5 +120,6 @@ public class NoteController extends BaseRestController<Note, Long> {
 			HttpServletRequest request, HttpServletResponse response) {
 		return (Page<Note>) this.noteService.getAll();
 	}
+	*/
 
 }
