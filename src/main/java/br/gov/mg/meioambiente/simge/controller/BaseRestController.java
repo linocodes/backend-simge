@@ -47,41 +47,29 @@ public abstract class BaseRestController<T, PK extends Serializable> extends Abs
 			//throw new ParametrosInvalidosExceptionSade(MensagensErro.getAtributosInvalidos(errors));
 		}		
 		T registro = this.service.createEntity(entity);
-		
-		
 		return new ResponseEntity<>(registro, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { "application/json", "application/xml" })
+	@RequestMapping(value = "/{id}", 
+					method = RequestMethod.GET, 
+					produces = { "application/json", "application/xml" })
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody T getHotel(@PathVariable("id") PK id, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		BaseEntity<T> entity = null;// this.hotelService.getHotel(id);
-		checkResourceFound(entity);
-		// todo: http://goo.gl/6iNAkz
-		return (T) entity;
+	public ResponseEntity<?> getById(@PathVariable("id") PK id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		T registro = this.service.getById(id);
+		checkResourceFound(registro);
+		return new ResponseEntity<>(registro, HttpStatus.OK);		
 	}
 
-	@RequestMapping(value = "/version", method = RequestMethod.GET, produces = { "application/json",
-			"application/xml" })
-	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody List<T> getListHotel(HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		List<T> listEntity = null;// this.hotelService.teste();
-		checkResourceFound(listEntity);
-		// todo: http://goo.gl/6iNAkz
-		return listEntity;
-	}
-
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = { "application/json",
-			"application/xml" }, produces = { "application/json", "application/xml" })
+	@RequestMapping(value = "/{id}", 
+					method = RequestMethod.PUT, 
+					consumes = { "application/json", "application/xml" }, 
+					produces = { "application/json", "application/xml" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updateHotel(@PathVariable("id") PK id, @RequestBody T entity, HttpServletRequest request,
-			HttpServletResponse response) {
+	public void updateHotel(@PathVariable("id") PK id, @RequestBody T entity, HttpServletRequest request, HttpServletResponse response) {
 		// checkResourceFound(this.hotelService.getHotel(id));
 		if (id !=  ((BaseEntity<T>) entity).getId())
 			throw new DataFormatException("ID doesn't match!");
-		// this.hotelService.updateHotel(hotel);
+		 this.service.update(entity);
 	}
 
 	// todo: @ApiImplicitParams, @ApiResponses
@@ -95,8 +83,7 @@ public abstract class BaseRestController<T, PK extends Serializable> extends Abs
 
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = { "application/json", "application/xml" })
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody Page<T> getAllHotel(@PageableDefault(value = 10, page = 0) Pageable pageable,
-			HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody Page<T> getAllHotel(@PageableDefault(value = 10, page = 0) Pageable pageable,HttpServletRequest request, HttpServletResponse response) {
 		// @RequestMapping(value = "/teste", method = RequestMethod.GET)
 		// @ResponseStatus(HttpStatus.OK)
 		// public @ResponseBody Page<Hotel> getAllHotelPage(@PageableDefault(value = 10,

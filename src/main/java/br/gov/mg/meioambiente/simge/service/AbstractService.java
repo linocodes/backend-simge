@@ -89,8 +89,21 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 
 	@Override
 	public T getById(PK id) {
-		// TODO Auto-generated method stub
+		
+		LOGGER.info("Pesquisando o registro: {}", id);		
+
+		try {
+			return repository.findOne(id);
+
+		} catch (Exception e) {
+			// LOGGER.error("Erro ao inserir {} erro {}", entity.getClass().getSimpleName(),
+			// e);
+			// throw new SQLExceptionSade(new MensagensErro("erroSQLInsert",
+			// NOME_ENTIDADE_PARA_EXIBICAO));
+		}
+		
 		return null;
+
 	}
 
 	@Override
