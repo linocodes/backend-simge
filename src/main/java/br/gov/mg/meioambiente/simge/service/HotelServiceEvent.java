@@ -8,7 +8,9 @@ import org.springframework.context.ApplicationEvent;
  */
 public class HotelServiceEvent extends ApplicationEvent {
 
-    public HotelServiceEvent(Object source) {
+	private static final long serialVersionUID = 8711970560218883880L;
+
+	public HotelServiceEvent(Object source) {
         super(source);
     }
 

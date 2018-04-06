@@ -9,35 +9,76 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-import br.gov.mg.meioambiente.simge.repository.ExtendedRepository;
-import br.gov.mg.meioambiente.simge.repository.ExtendedRepositoryImpl;
+import br.gov.mg.meioambiente.simge.repository.BaseRepository;
+import br.gov.mg.meioambiente.simge.repository.AbstractRepository;
 
-public class AbstractService<T, PK extends Serializable> implements BaseCrudService<T, PK> {
+public abstract class AbstractService<T, PK extends Serializable> implements BaseCrudService<T, PK> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ExtendedRepositoryImpl.class);    
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRepository.class);
 
-	protected ExtendedRepository<T, PK> repository;
+	protected BaseRepository<T, PK> repository;
 
-    public AbstractService(ExtendedRepository<T, PK> repository) {
-        this.repository = repository;
-    }
+	public AbstractService(BaseRepository<T, PK> repository) {
+		this.repository = repository;
+	}
 
+	/**
+	 * Valida os dados antes de enviar para o banco de dados.
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	abstract boolean isValidacao(T entity);
+
+	/**
+	 * Antes de Salvar
+	 */
+	abstract void beforeCreate();
+
+	/**
+	 * Depois de Salvar
+	 */
+	abstract void afterCreate();
+
+	/**
+	 * Persiste os dados
+	 */
 	@Override
-	public T save(T entity) {
-		// TODO Auto-generated method stub
-		return null;
+	public T createEntity(T entity) {
+
+		LOGGER.info("Criando um novo registro entidade: {}", entity.getClass().getSimpleName());
+
+		if (isValidacao(entity)) {
+			beforeCreate();
+		} else {
+
+		}
+
+		try {
+
+			repository.saveAndFlush(entity);
+			LOGGER.info("Registro criado com sucesso.");
+			afterCreate();
+
+		} catch (Exception e) {
+			LOGGER.error("Erro ao inserir {} erro {}", entity.getClass().getSimpleName(), e);
+			// throw new SQLExceptionSade(new MensagensErro("erroSQLInsert",
+			// NOME_ENTIDADE_PARA_EXIBICAO));
+		}
+
+		return entity;
 	}
 
 	@Override
 	public void delete(T entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteById(PK id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -62,9 +103,9 @@ public class AbstractService<T, PK extends Serializable> implements BaseCrudServ
 	public Page<T> getPageAll(Pageable pageable) {
 		return repository.findAll(pageable);
 		// TODO Auto-generated method stub
-		//return null;
+		// return null;
 	}
-	
+
 	@Override
 	public List<T> getByFilter(Specification<T> spec) {
 		// TODO Auto-generated method stub
@@ -77,15 +118,10 @@ public class AbstractService<T, PK extends Serializable> implements BaseCrudServ
 		return null;
 	}
 
+	/*
+	 * @Override public T save(T entity) {
+	 * this.logger.debug("Create a new {} with information: {}", entity.getClass(),
+	 * entity.toString()); return this.dao.save(entity); }
+	 */
 
-
-    /*
-    @Override
-    public T save(T entity) {
-        this.logger.debug("Create a new {} with information: {}", entity.getClass(),
-                entity.toString());
-        return this.dao.save(entity);
-    }
-    */
-  
 }

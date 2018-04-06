@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,13 +36,20 @@ public abstract class BaseRestController<T, PK extends Serializable> extends Abs
 		this.service = service;
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.POST, consumes = { "application/json",
-			"application/xml" }, produces = { "application/json", "application/xml" })
+	@RequestMapping(value = "", 
+			        method = RequestMethod.POST, 
+			        consumes = { "application/json","application/xml" }, 
+			        produces = { "application/json", "application/xml" })
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createHotel(@RequestBody T entity, HttpServletRequest request, HttpServletResponse response) {
-		LOGGER.info("Creating a new todo entry by using information: {}", entity);
-		BaseEntity<T> createEntity = null;// this.hotelService.createHotel(hotel);
-		response.setHeader("Location", request.getRequestURL().append("/").append(createEntity.getId()).toString());
+	public ResponseEntity<?> createEntity(@Valid @RequestBody T entity, Errors errors, HttpServletRequest request, HttpServletResponse response) {
+		
+		if (errors.hasErrors()) {
+			//throw new ParametrosInvalidosExceptionSade(MensagensErro.getAtributosInvalidos(errors));
+		}		
+		T registro = this.service.createEntity(entity);
+		
+		
+		return new ResponseEntity<>(registro, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { "application/json", "application/xml" })

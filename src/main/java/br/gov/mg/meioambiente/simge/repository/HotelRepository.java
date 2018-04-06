@@ -1,20 +1,16 @@
 package br.gov.mg.meioambiente.simge.repository;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.gov.mg.meioambiente.simge.entity.Hotel;
 
 @Repository
-public interface HotelRepository extends ExtendedRepository<Hotel, Long> {
+public interface HotelRepository extends BaseRepository<Hotel, Long> {
 
     Hotel findHotelByCity(String city);
-    Page findAll(Pageable pageable);
+    Page<Hotel> findAll(Pageable pageable);
     
 	/*
 	 * Hotel findHotelByCity(String city);

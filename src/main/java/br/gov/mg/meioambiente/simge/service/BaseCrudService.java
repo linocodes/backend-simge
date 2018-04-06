@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 public interface BaseCrudService<T, PK extends Serializable> {
 
-	T save(T entity);
+	T createEntity(T entity);
 
 	void delete(T entity);
 

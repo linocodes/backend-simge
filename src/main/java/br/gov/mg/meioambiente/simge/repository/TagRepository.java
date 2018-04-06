@@ -4,6 +4,6 @@ import org.springframework.stereotype.Repository;
 import br.gov.mg.meioambiente.simge.entity.Tag;
 
 @Repository
-public interface TagRepository extends ExtendedRepository<Tag, Long> {
+public interface TagRepository extends BaseRepository<Tag, Long> {
 
 }

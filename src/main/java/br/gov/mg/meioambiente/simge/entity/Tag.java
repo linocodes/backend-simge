@@ -14,6 +14,7 @@ public class Tag extends BaseEntity<Long> {
 	private static final long serialVersionUID = -7655961997031546542L;
 
 	@NaturalId
+	@Column(nullable=false)	
 	private String name;
 
 	public String getName() {
