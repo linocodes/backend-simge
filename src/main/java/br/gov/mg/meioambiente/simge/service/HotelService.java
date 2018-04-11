@@ -30,11 +30,29 @@ public class HotelService extends AbstractService<Hotel, Long> {
 	}
 
 	@Override
-	void beforeCreate() {
+	void beforeCreate(Hotel entity) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	void afterCreate() {
+	void afterCreate(Hotel entity) {
+	}
+
+	@Override
+	void beforeUpdate(Hotel entity) {
+	}
+
+	@Override
+	void afterUpdate(Hotel entity) {
+	}
+
+	@Override
+	void beforeDelete(Hotel entity) {
+	}
+
+	@Override
+	void afterDelete(Hotel entity) {
 	}
 
 }

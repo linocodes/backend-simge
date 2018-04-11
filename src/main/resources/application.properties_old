@@ -1,0 +1,45 @@
+## Spring DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)
+#spring.datasource.url = jdbc:mysql://localhost:3306/novo_simge?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+#spring.datasource.username = root
+#spring.datasource.password = root
+
+
+## Hibernate Properties
+
+# Naming strategy
+spring.jpa.hibernate.naming-strategy = org.hibernate.cfg.ImprovedNamingStrategy
+spring.jpa.hibernate.cache.provider_class = org.hibernate.cache.HashtableCacheProvider
+jadira.usertype.databaseZone = jvm
+
+# The SQL dialect makes Hibernate generate better SQL for the chosen database
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5Dialect
+
+# Hibernate ddl auto (create, create-drop, validate, update)
+spring.jpa.hibernate.ddl-auto = update
+
+#server:
+#  port: 8080
+#  contextPath: /backend
+
+#server.port=8080
+#server.contextPath=/mkyong
+
+app.customer.datasource.url=jdbc:h2:mem:customers;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+app.customer.datasource.driver-class-name=org.h2.Driver
+app.customer.jpa.properties.hibernate.hbm2ddl.auto=create
+
+app.order.datasource.url=jdbc:h2:mem:orders;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+app.order.datasource.driver-class-name=org.h2.Driver
+app.order.jpa.properties.hibernate.hbm2ddl.auto=create
+
+#datasource=java\:/SADE
+#datasourceGeo=java\:/SADEGeoServer
+
+spring.datasource.primary.jndi-name=java\:/SIMGE-MYSQL
+spring.datasource.primary.driver-class-name=org.mysql.Driver
+
+spring.datasource.secondary.jndi-name=java\:/SIMGE-OUTRO-MYSQL
+spring.datasource.secondary.driver-class-name=org.mysql.Driver
+
+#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQL9Dialect
+spring.jpa.show-sql=true

@@ -8,7 +8,7 @@ import org.hibernate.annotations.NaturalId;
 
 @Entity(name = "Tag")
 @Table(name = "tag")
-@AttributeOverride(name = "id", column = @Column(name = "tag_id", nullable = false, columnDefinition = "BIGINT UNSIGNED"))  
+@AttributeOverride(name = "id", column = @Column(name = "tag_id", nullable = false, columnDefinition = "BIGINT UNSIGNED"))
 public class Tag extends BaseEntity<Long> {
 
 	private static final long serialVersionUID = -7655961997031546542L;

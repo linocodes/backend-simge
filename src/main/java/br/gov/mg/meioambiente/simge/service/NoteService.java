@@ -21,15 +21,27 @@ public class NoteService extends AbstractService<Note, Long> {
 	}
 
 	@Override
-	void beforeCreate() {
-		// TODO Auto-generated method stub
-		
+	void beforeCreate(Note entity) {
 	}
 
 	@Override
-	void afterCreate() {
-		// TODO Auto-generated method stub
-		
+	void afterCreate(Note entity) {
+	}
+
+	@Override
+	void beforeUpdate(Note entity) {
+	}
+
+	@Override
+	void afterUpdate(Note entity) {
+	}
+
+	@Override
+	void beforeDelete(Note entity) {
+	}
+
+	@Override
+	void afterDelete(Note entity) {
 	}
 	
 }

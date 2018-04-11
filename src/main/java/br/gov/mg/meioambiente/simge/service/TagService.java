@@ -15,20 +15,31 @@ public class TagService extends AbstractService<Tag, Long> {
 
 	@Override
 	boolean isValidacao(Tag entity) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	void beforeCreate() {
-		// TODO Auto-generated method stub
-		
+	void beforeCreate(Tag entity) {
 	}
 
 	@Override
-	void afterCreate() {
-		// TODO Auto-generated method stub
-		
+	void afterCreate(Tag entity) {
+	}
+
+	@Override
+	void beforeUpdate(Tag entity) {
+	}
+
+	@Override
+	void afterUpdate(Tag entity) {
+	}
+
+	@Override
+	void beforeDelete(Tag entity) {
+	}
+
+	@Override
+	void afterDelete(Tag entity) {
 	}
 
 }

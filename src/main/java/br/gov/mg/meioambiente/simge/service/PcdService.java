@@ -21,15 +21,27 @@ public class PcdService extends AbstractService<Pcd, Long> {
 	}
 
 	@Override
-	void beforeCreate() {
-		// TODO Auto-generated method stub
-		
+	void beforeCreate(Pcd entity) {
 	}
 
 	@Override
-	void afterCreate() {
-		// TODO Auto-generated method stub
-		
+	void afterCreate(Pcd entity) {
+	}
+
+	@Override
+	void beforeUpdate(Pcd entity) {
+	}
+
+	@Override
+	void afterUpdate(Pcd entity) {
+	}
+
+	@Override
+	void beforeDelete(Pcd entity) {
+	}
+
+	@Override
+	void afterDelete(Pcd entity) {
 	}
 
 }

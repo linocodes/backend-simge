@@ -16,7 +16,7 @@ public interface BaseCrudService<T, PK extends Serializable> {
 	void deleteById(PK id);
 
 	T update(T entity);
-
+	
 	T getById(PK id);
 
 	List<T> getAll();

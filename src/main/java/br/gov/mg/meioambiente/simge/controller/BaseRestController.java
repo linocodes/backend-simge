@@ -54,10 +54,10 @@ public abstract class BaseRestController<T, PK extends Serializable> extends Abs
 					method = RequestMethod.GET, 
 					produces = { "application/json", "application/xml" })
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?> getById(@PathVariable("id") PK id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ResponseEntity<?> getById(@PathVariable("id") PK id, HttpServletRequest request, HttpServletResponse response) {
 		T registro = this.service.getById(id);
 		checkResourceFound(registro);
-		return new ResponseEntity<>(registro, HttpStatus.OK);		
+		return new ResponseEntity<T>(registro, HttpStatus.OK);		
 	}
 
 	@RequestMapping(value = "/{id}", 
@@ -65,34 +65,46 @@ public abstract class BaseRestController<T, PK extends Serializable> extends Abs
 					consumes = { "application/json", "application/xml" }, 
 					produces = { "application/json", "application/xml" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updateHotel(@PathVariable("id") PK id, @RequestBody T entity, HttpServletRequest request, HttpServletResponse response) {
-		// checkResourceFound(this.hotelService.getHotel(id));
-		if (id !=  ((BaseEntity<T>) entity).getId())
-			throw new DataFormatException("ID doesn't match!");
-		 this.service.update(entity);
+	public ResponseEntity<?> update(@PathVariable("id") PK id, @Valid @RequestBody T entity, Errors errors, HttpServletRequest request, HttpServletResponse response) {
+		
+		if (errors.hasErrors()) {
+			//throw new ParametrosInvalidosExceptionSade(MensagensErro.getAtributosInvalidos(errors));
+		}	
+		
+		checkResourceFound(this.service.getById(id));
+				
+		if (!((BaseEntity<T>) entity).getId().equals(id)) {
+			//throw new ParametrosInvalidosExceptionSade("id");
+		}
+
+		this.service.update(entity);
+		return new ResponseEntity<T>(this.service.getById(id), HttpStatus.OK);		
 	}
 
-	// todo: @ApiImplicitParams, @ApiResponses
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = { "application/json",
-			"application/xml" })
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteHotel(@PathVariable("id") PK id, HttpServletRequest request, HttpServletResponse response) {
-		// checkResourceFound(this.hotelService.getHotel(id));
-		// this.hotelService.deleteHotel(id);
-	}
+    @RequestMapping(value = "deleteID/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteById(@PathVariable("id") PK id, HttpServletRequest request, HttpServletResponse response) {
+        this.service.deleteById(id);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }	
+	
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@RequestBody T entity, HttpServletRequest request, HttpServletResponse response) {
+        this.service.delete(entity);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }	
 
-	@RequestMapping(value = "", method = RequestMethod.GET, produces = { "application/json", "application/xml" })
+	@RequestMapping(value = "getPage", method = RequestMethod.GET, produces = { "application/json", "application/xml" })
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody Page<T> getAllHotel(@PageableDefault(value = 10, page = 0) Pageable pageable,HttpServletRequest request, HttpServletResponse response) {
-		// @RequestMapping(value = "/teste", method = RequestMethod.GET)
-		// @ResponseStatus(HttpStatus.OK)
-		// public @ResponseBody Page<Hotel> getAllHotelPage(@PageableDefault(value = 10,
-		// page = 0) Pageable pageable,
-		// @RequestParam(value = "search") String search, HttpServletRequest request,
-		// HttpServletResponse response) {
-		// return null; // this.service.getAllHotels(pageable);
-		// }
-		return this.service.getPageAll(pageable);
+	public ResponseEntity<Page<T>> getPageAll(@PageableDefault(value = DEFAULT_PAGE_NUM, page = DEFAULT_PAGE_SIZE) Pageable pageable,
+			HttpServletRequest request, HttpServletResponse response) {
+		Page<T> page = this.service.getPageAll(pageable);
+		return new ResponseEntity<Page<T>>(page,HttpStatus.OK);		
+	}
+
+	@RequestMapping(value = "/getAll", method = RequestMethod.GET, produces = { "application/json", "application/xml" })
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<List<T>> getAll(HttpServletRequest request, HttpServletResponse response) {
+		return new ResponseEntity<List<T>>(this.service.getAll(), HttpStatus.OK);		
 	}
 
 }

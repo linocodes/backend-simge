@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import br.gov.mg.meioambiente.simge.repository.BaseRepository;
+import br.gov.mg.meioambiente.simge.exception.ResourceNotFoundException;
 import br.gov.mg.meioambiente.simge.repository.AbstractRepository;
 
 public abstract class AbstractService<T, PK extends Serializable> implements BaseCrudService<T, PK> {
@@ -33,13 +34,34 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 	/**
 	 * Antes de Salvar
 	 */
-	abstract void beforeCreate();
+	abstract void beforeCreate(T entity);
 
 	/**
 	 * Depois de Salvar
 	 */
-	abstract void afterCreate();
+	abstract void afterCreate(T entity);
 
+	/**
+	 * Antes de atualizar o registro
+	 */
+	abstract void beforeUpdate(T entity);
+
+	/**
+	 * Depois de atualizar o registro
+	 */
+	abstract void afterUpdate(T entity);
+
+	/**
+	 * Antes de deletar o registro
+	 */
+	abstract void beforeDelete(T entity);
+
+	/**
+	 * Depois de deletar o registro
+	 */
+	abstract void afterDelete(T entity);
+
+	
 	/**
 	 * Persiste os dados
 	 */
@@ -49,7 +71,7 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 		LOGGER.info("Criando um novo registro entidade: {}", entity.getClass().getSimpleName());
 
 		if (isValidacao(entity)) {
-			beforeCreate();
+			beforeCreate(entity);
 		} else {
 
 		}
@@ -58,7 +80,7 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 
 			repository.saveAndFlush(entity);
 			LOGGER.info("Registro criado com sucesso.");
-			afterCreate();
+			afterCreate(entity);
 
 		} catch (Exception e) {
 			LOGGER.error("Erro ao inserir {} erro {}", entity.getClass().getSimpleName(), e);
@@ -71,13 +93,45 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 
 	@Override
 	public void delete(T entity) {
-		// TODO Auto-generated method stub
+		
+		LOGGER.info("Deleta um novo registro entidade: {}", entity.getClass().getSimpleName());
+		
+		beforeDelete(entity);
+		
+		try {
+			repository.delete(entity);
+			LOGGER.info("Registro deletado com sucesso.");
+			afterDelete(entity);
+		} catch (Exception e) {
+			//logger.error(new LogBuilder().adicionaMensagem("Erro ao deletar estilo")
+			//		.adicionaParametro("Estilo", estilo.toString()).getMensagem(), e);
+			//throw new SQLExceptionSade(new MensagensErro("erroSQLDelete", NOME_ENTIDADE_PARA_EXIBICAO));
+		}
 
 	}
 
 	@Override
 	public void deleteById(PK id) {
-		// TODO Auto-generated method stub
+		
+		LOGGER.info("Deleta um novo registro : {}", id);
+
+		T entity = this.getById(id);
+		
+		if (entity == null) {
+			  throw new ResourceNotFoundException("resource not found");
+		}
+		
+		beforeDelete(entity);
+		
+		try {
+			repository.delete(entity);
+			LOGGER.info("Registro deletado com sucesso.");
+			afterDelete(entity);
+		} catch (Exception e) {
+			//logger.error(new LogBuilder().adicionaMensagem("Erro ao deletar estilo")
+			//		.adicionaParametro("Estilo", estilo.toString()).getMensagem(), e);
+			//throw new SQLExceptionSade(new MensagensErro("erroSQLDelete", NOME_ENTIDADE_PARA_EXIBICAO));
+		}
 
 	}
 
@@ -108,15 +162,13 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 
 	@Override
 	public List<T> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("Pesquisando getAll");
+		return this.repository.findAll();
 	}
 
 	@Override
 	public Page<T> getPageAll(Pageable pageable) {
 		return repository.findAll(pageable);
-		// TODO Auto-generated method stub
-		// return null;
 	}
 
 	@Override
