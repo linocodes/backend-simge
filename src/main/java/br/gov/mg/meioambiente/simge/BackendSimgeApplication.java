@@ -7,15 +7,16 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "br.gov.mg.meioambiente")
-public class BackendSimgeApplication extends SpringBootServletInitializer  {
- 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(BackendSimgeApplication.class);
-    }
-	
+@ComponentScan(basePackages = "br.gov.mg.meioambiente.simge")
+public class BackendSimgeApplication extends SpringBootServletInitializer {
+
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(BackendSimgeApplication.class);
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(BackendSimgeApplication.class, args);
 	}
+
 }
