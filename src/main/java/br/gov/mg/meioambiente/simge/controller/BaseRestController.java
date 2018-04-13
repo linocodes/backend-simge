@@ -19,11 +19,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import br.gov.mg.meioambiente.simge.entity.BaseEntity;
-import br.gov.mg.meioambiente.simge.exception.DataFormatException;
 import br.gov.mg.meioambiente.simge.service.AbstractService;
 
 public abstract class BaseRestController<T, PK extends Serializable> extends AbstractRestHandler {
@@ -93,17 +92,20 @@ public abstract class BaseRestController<T, PK extends Serializable> extends Abs
         return new ResponseEntity<Void>(HttpStatus.OK);
     }	
 
-	@RequestMapping(value = "getPage", method = RequestMethod.GET, produces = { "application/json", "application/xml" })
+	@RequestMapping(value = "/teste", method = RequestMethod.GET, produces = { "application/json", "application/xml" })
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Page<T>> getPageAll(@PageableDefault(value = DEFAULT_PAGE_NUM, page = DEFAULT_PAGE_SIZE) Pageable pageable,
-			HttpServletRequest request, HttpServletResponse response) {
-		Page<T> page = this.service.getPageAll(pageable);
-		return new ResponseEntity<Page<T>>(page,HttpStatus.OK);		
+	public ResponseEntity<Page<T>> getPageAll(
+/*		@PageableDefault(value = DEFAULT_PAGE_NUM, page = DEFAULT_PAGE_SIZE) Pageable pageable,*/ 
+		@PageableDefault(value=10, page=0) Pageable pageable,
+		HttpServletRequest request, HttpServletResponse response) {
+			Page<T> page = this.service.getPageAll(pageable);
+			return new ResponseEntity<Page<T>>(page,HttpStatus.OK);		
 	}
 
 	@RequestMapping(value = "/getAll", method = RequestMethod.GET, produces = { "application/json", "application/xml" })
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<List<T>> getAll(HttpServletRequest request, HttpServletResponse response) {
+		
 		return new ResponseEntity<List<T>>(this.service.getAll(), HttpStatus.OK);		
 	}
 

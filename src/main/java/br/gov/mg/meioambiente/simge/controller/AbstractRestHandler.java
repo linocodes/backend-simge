@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 
 import br.gov.mg.meioambiente.simge.exception.DataFormatException;
-import br.gov.mg.meioambiente.simge.exception.ResourceNotFoundException;
+import br.gov.mg.meioambiente.simge.exception.NotFoundException;
 import br.gov.mg.meioambiente.simge.pojo.exception.RestErrorInfo;
 
 import javax.servlet.http.HttpServletResponse;
@@ -30,35 +30,14 @@ public abstract class AbstractRestHandler implements ApplicationEventPublisherAw
     protected static final int  DEFAULT_PAGE_SIZE = 20;
     protected static final int DEFAULT_PAGE_NUM = 0;
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(DataFormatException.class)
-    public
-    @ResponseBody
-    RestErrorInfo handleDataStoreException(DataFormatException ex, WebRequest request, HttpServletResponse response) {
-        log.info("Converting Data Store exception to RestResponse : " + ex.getMessage());
-
-        return new RestErrorInfo(ex, "You messed up.");
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public
-    @ResponseBody
-    RestErrorInfo handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request, HttpServletResponse response) {
-        log.info("ResourceNotFoundException handler:" + ex.getMessage());
-
-        return new RestErrorInfo(ex, "Sorry I couldn't find it.");
-    }
-
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.eventPublisher = applicationEventPublisher;
     }
 
-    //todo: replace with exception mapping
     public static <T> T checkResourceFound(final T resource) {
         if (resource == null) {
-            throw new ResourceNotFoundException("resource not found");
+            throw new NotFoundException("resource not found");
         }
         return resource;
     }

@@ -3,11 +3,10 @@ package br.gov.mg.meioambiente.simge.exception;
 /**
  * for HTTP 400 errors
  */
-public final class DataFormatException extends RuntimeException {
+public final class DataFormatException extends AppException {
 	
-
-	private static final long serialVersionUID = -479051828863114005L;
-
+	private static final long serialVersionUID = 1L;
+	
 	public DataFormatException() {
         super();
     }
@@ -23,4 +22,6 @@ public final class DataFormatException extends RuntimeException {
     public DataFormatException(Throwable cause) {
         super(cause);
     }
+	
+
 }

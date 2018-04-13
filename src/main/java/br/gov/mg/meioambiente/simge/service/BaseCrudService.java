@@ -18,12 +18,14 @@ public interface BaseCrudService<T, PK extends Serializable> {
 	T update(T entity);
 	
 	T getById(PK id);
+	
+	T getById(T entity, PK id);	
 
 	List<T> getAll();
 	
 	Page<T> getPageAll(Pageable pageable);
 
-	List<T> getByFilter(Specification<T> spec);
+	Page<T> getByFilter(Specification<T> spec);
 
 	Page<T> getByFilter(Specification<T> spec, Pageable pageable);
 

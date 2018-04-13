@@ -5,19 +5,32 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import br.gov.mg.meioambiente.simge.repository.BaseRepository;
-import br.gov.mg.meioambiente.simge.exception.ResourceNotFoundException;
+import br.gov.mg.meioambiente.simge.validator.EntityOptionalValidator;
+import br.gov.mg.meioambiente.simge.entity.BaseEntity;
+import br.gov.mg.meioambiente.simge.entity.Usuario;
+import br.gov.mg.meioambiente.simge.exception.AppException;
+import br.gov.mg.meioambiente.simge.exception.NotFoundException;
+import br.gov.mg.meioambiente.simge.logger.LogMessagem;
 import br.gov.mg.meioambiente.simge.repository.AbstractRepository;
 
 public abstract class AbstractService<T, PK extends Serializable> implements BaseCrudService<T, PK> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRepository.class);
+	final static String log_listando = "Listando os registros na entidade: {}";
+	final static String log_pesquisando = "Pesquisando o registro na entidade: {} identificado {}";
+	final static String log_editando = "Editando um novo registro na entidade: {}";
+	final static String log_excluindo = "Deleta um novo registro na entidade: {}";
+	final static String log_inserindo = "Criando um novo registro na entidade: {}";
+	final static String log_sucesso = "Operação realizada com sucesso.";
 
 	protected BaseRepository<T, PK> repository;
+
+	private EntityOptionalValidator<T> validarEntidade;
 
 	public AbstractService(BaseRepository<T, PK> repository) {
 		this.repository = repository;
@@ -61,132 +74,210 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 	 */
 	abstract void afterDelete(T entity);
 
-	
 	/**
 	 * Persiste os dados
 	 */
 	@Override
 	public T createEntity(T entity) {
 
-		LOGGER.info("Criando um novo registro entidade: {}", entity.getClass().getSimpleName());
+		new LogMessagem().printInfoLogWithId(log_inserindo, entity.getClass().getSimpleName());
 
 		if (isValidacao(entity)) {
 			beforeCreate(entity);
-		} else {
-
 		}
 
 		try {
 
 			repository.saveAndFlush(entity);
-			LOGGER.info("Registro criado com sucesso.");
 			afterCreate(entity);
 
 		} catch (Exception e) {
-			LOGGER.error("Erro ao inserir {} erro {}", entity.getClass().getSimpleName(), e);
-			// throw new SQLExceptionSade(new MensagensErro("erroSQLInsert",
-			// NOME_ENTIDADE_PARA_EXIBICAO));
+			new LogMessagem().printErrorLog(e);
+			throw new AppException(log_inserindo, e);
 		}
 
+		new LogMessagem().printInfoLog(log_sucesso);
 		return entity;
 	}
 
 	@Override
 	public void delete(T entity) {
-		
-		LOGGER.info("Deleta um novo registro entidade: {}", entity.getClass().getSimpleName());
-		
+
+		new LogMessagem().printInfoLogWithId(log_excluindo, entity.getClass().getSimpleName());
+
 		beforeDelete(entity);
-		
+
 		try {
 			repository.delete(entity);
-			LOGGER.info("Registro deletado com sucesso.");
 			afterDelete(entity);
 		} catch (Exception e) {
-			//logger.error(new LogBuilder().adicionaMensagem("Erro ao deletar estilo")
-			//		.adicionaParametro("Estilo", estilo.toString()).getMensagem(), e);
-			//throw new SQLExceptionSade(new MensagensErro("erroSQLDelete", NOME_ENTIDADE_PARA_EXIBICAO));
+			new LogMessagem().printErrorLog(e);
+			throw new AppException(log_excluindo, e);
 		}
+
+		new LogMessagem().printInfoLog(log_sucesso);
 
 	}
 
 	@Override
 	public void deleteById(PK id) {
-		
-		LOGGER.info("Deleta um novo registro : {}", id);
+
+		new LogMessagem().printInfoLogWithId(log_excluindo, id);
 
 		T entity = this.getById(id);
-		
-		if (entity == null) {
-			  throw new ResourceNotFoundException("resource not found");
-		}
-		
+
 		beforeDelete(entity);
-		
+
 		try {
 			repository.delete(entity);
-			LOGGER.info("Registro deletado com sucesso.");
 			afterDelete(entity);
 		} catch (Exception e) {
-			//logger.error(new LogBuilder().adicionaMensagem("Erro ao deletar estilo")
-			//		.adicionaParametro("Estilo", estilo.toString()).getMensagem(), e);
-			//throw new SQLExceptionSade(new MensagensErro("erroSQLDelete", NOME_ENTIDADE_PARA_EXIBICAO));
+			new LogMessagem().printErrorLog(e);
+			throw new AppException(log_excluindo, e);
 		}
+
+		new LogMessagem().printInfoLog(log_sucesso);
 
 	}
 
 	@Override
 	public T update(T entity) {
-		// TODO Auto-generated method stub
-		return null;
+
+		new LogMessagem().printInfoLogWithId(log_editando, entity.getClass().getSimpleName());
+
+		if (isValidacao(entity)) {
+			beforeUpdate(entity);
+		}
+
+		try {
+
+			repository.saveAndFlush(entity);
+			afterUpdate(entity);
+
+		} catch (Exception e) {
+			new LogMessagem().printErrorLog(e);
+			throw new AppException(log_editando, e);
+		}
+
+		new LogMessagem().printInfoLog(log_sucesso);
+		return entity;
+
 	}
 
 	@Override
 	public T getById(PK id) {
-		
-		LOGGER.info("Pesquisando o registro: {}", id);		
+
+		new LogMessagem().printInfoLogWithId(log_pesquisando, id);
 
 		try {
-			return repository.findOne(id);
-
+			T entity = this.getById(id);
+			validarEntidade.validadatorOptional(entity);
+			new LogMessagem().printInfoLog(log_sucesso);
+			return entity;
 		} catch (Exception e) {
-			// LOGGER.error("Erro ao inserir {} erro {}", entity.getClass().getSimpleName(),
-			// e);
-			// throw new SQLExceptionSade(new MensagensErro("erroSQLInsert",
-			// NOME_ENTIDADE_PARA_EXIBICAO));
+			new LogMessagem().printErrorLog(e);
+			throw new AppException(log_pesquisando, e);
 		}
-		
-		return null;
+
+	}
+
+	@Override
+	public T getById(T entity, PK id) {
+
+		new LogMessagem().printInfoLogWithId(log_pesquisando, entity.getClass().getSimpleName(), id);
+
+		try {
+			entity = repository.findOne(id);
+			validarEntidade.validadatorOptional(entity);
+		} catch (Exception e) {
+			new LogMessagem().printErrorLog(e);
+			throw new AppException(log_pesquisando, e);
+		}
+
+		new LogMessagem().printInfoLog(log_sucesso);
+		return entity;
 
 	}
 
 	@Override
 	public List<T> getAll() {
-		LOGGER.info("Pesquisando getAll");
-		return this.repository.findAll();
+
+		new LogMessagem().printInfoLog(log_listando);
+
+		List<T> list = null;
+
+		try {
+
+			list = repository.findAll();
+			validarEntidade.validadatorOptional(list);
+
+		} catch (Exception e) {
+			new LogMessagem().printErrorLog(e);
+			throw new AppException(log_listando, e);
+
+		}
+
+		new LogMessagem().printInfoLog(log_sucesso);
+		return list;
+
 	}
 
 	@Override
 	public Page<T> getPageAll(Pageable pageable) {
-		return repository.findAll(pageable);
+		new LogMessagem().printInfoLog(log_listando);
+
+		Page<T> list = null;
+
+		try {
+
+			list = repository.findAll(pageable);
+			//validarEntidade.validadatorOptional(list);
+
+		} catch (Exception e) {
+			new LogMessagem().printErrorLog(e);
+			throw new AppException(log_listando, e);
+
+		}
+
+		new LogMessagem().printInfoLog(log_sucesso);
+		return list;
 	}
 
 	@Override
-	public List<T> getByFilter(Specification<T> spec) {
-		// TODO Auto-generated method stub
-		return null;
+	public Page<T> getByFilter(Specification<T> spec) {
+		new LogMessagem().printInfoLog(log_listando);
+
+		Page<T> list = null;
+
+		try {
+			list = (Page<T>) repository.findAll(spec);
+			validarEntidade.validadatorOptional(list);
+		} catch (Exception e) {
+			new LogMessagem().printErrorLog(e);
+			throw new AppException(log_listando, e);
+		}
+
+		new LogMessagem().printInfoLog(log_sucesso);
+		return list;
 	}
 
 	@Override
 	public Page<T> getByFilter(Specification<T> spec, Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		new LogMessagem().printInfoLog(log_listando);
 
-	/*
-	 * @Override public T save(T entity) {
-	 * this.logger.debug("Create a new {} with information: {}", entity.getClass(),
-	 * entity.toString()); return this.dao.save(entity); }
-	 */
+		Page<T> list = null;
+
+		try {
+			list = repository.findAll(spec, pageable);
+			validarEntidade.validadatorOptional(list);
+		} catch (Exception e) {
+			new LogMessagem().printErrorLog(e);
+			throw new AppException(log_listando, e);
+		}
+
+		new LogMessagem().printInfoLog(log_sucesso);
+		return list;
+
+	}
 
 }
