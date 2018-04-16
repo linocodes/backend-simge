@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.gov.mg.meioambiente.simge.entity.Tag;
 import br.gov.mg.meioambiente.simge.entity.Usuario;
+import br.gov.mg.meioambiente.simge.filter.Filter;
 import br.gov.mg.meioambiente.simge.repository.TagRepository;
 import br.gov.mg.meioambiente.simge.repository.UsuarioRepository;
 import br.gov.mg.meioambiente.simge.validator.EntityOptionalValidator;
@@ -51,6 +52,12 @@ public class UsuarioService  extends AbstractService<Usuario, Long> {
 
 	@Override
 	void afterDelete(Usuario entity) {
+	}
+
+	@Override
+	Filter search(String search) {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 	
 	

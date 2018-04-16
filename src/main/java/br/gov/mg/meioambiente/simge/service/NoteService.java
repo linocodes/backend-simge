@@ -3,6 +3,7 @@ package br.gov.mg.meioambiente.simge.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.gov.mg.meioambiente.simge.entity.Note;
+import br.gov.mg.meioambiente.simge.filter.Filter;
 import br.gov.mg.meioambiente.simge.repository.NoteRepository;
 
 
@@ -42,6 +43,12 @@ public class NoteService extends AbstractService<Note, Long> {
 
 	@Override
 	void afterDelete(Note entity) {
+	}
+
+	@Override
+	Filter search(String search) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

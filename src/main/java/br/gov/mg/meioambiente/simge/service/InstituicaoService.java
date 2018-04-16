@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.mg.meioambiente.simge.entity.Instituicao;
+import br.gov.mg.meioambiente.simge.filter.Filter;
 import br.gov.mg.meioambiente.simge.repository.InstituicaoRepository;
 
 @Service
@@ -42,6 +43,12 @@ public class InstituicaoService extends AbstractService<Instituicao, Long> {
 
 	@Override
 	void afterDelete(Instituicao entity) {
+	}
+
+	@Override
+	Filter search(String search) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

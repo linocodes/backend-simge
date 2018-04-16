@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.mg.meioambiente.simge.entity.Pcd;
+import br.gov.mg.meioambiente.simge.filter.Filter;
 import br.gov.mg.meioambiente.simge.repository.PcdRepository;
 
 @Service
@@ -42,6 +43,12 @@ public class PcdService extends AbstractService<Pcd, Long> {
 
 	@Override
 	void afterDelete(Pcd entity) {
+	}
+
+	@Override
+	Filter search(String search) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

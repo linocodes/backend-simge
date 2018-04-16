@@ -23,9 +23,9 @@ public interface BaseCrudService<T, PK extends Serializable> {
 
 	List<T> getAll();
 	
-	Page<T> getPageAll(Pageable pageable);
+	Page<T> getAll(Pageable pageable);
 
-	Page<T> getByFilter(Specification<T> spec);
+	Page<T> getByFilter(String search, Pageable pageable);
 
 	Page<T> getByFilter(Specification<T> spec, Pageable pageable);
 

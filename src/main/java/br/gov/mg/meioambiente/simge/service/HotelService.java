@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.jpa.domain.Specification;
 
 import br.gov.mg.meioambiente.simge.entity.Hotel;
+import br.gov.mg.meioambiente.simge.filter.Filter;
 import br.gov.mg.meioambiente.simge.repository.HotelRepository;
 
 @Service
@@ -53,6 +54,12 @@ public class HotelService extends AbstractService<Hotel, Long> {
 
 	@Override
 	void afterDelete(Hotel entity) {
+	}
+
+	@Override
+	Filter search(String search) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

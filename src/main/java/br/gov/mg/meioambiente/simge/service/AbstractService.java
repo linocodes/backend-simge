@@ -16,6 +16,7 @@ import br.gov.mg.meioambiente.simge.entity.BaseEntity;
 import br.gov.mg.meioambiente.simge.entity.Usuario;
 import br.gov.mg.meioambiente.simge.exception.AppException;
 import br.gov.mg.meioambiente.simge.exception.NotFoundException;
+import br.gov.mg.meioambiente.simge.filter.Filter;
 import br.gov.mg.meioambiente.simge.logger.LogMessagem;
 import br.gov.mg.meioambiente.simge.repository.AbstractRepository;
 
@@ -73,6 +74,8 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 	 * Depois de deletar o registro
 	 */
 	abstract void afterDelete(T entity);
+	
+	abstract Filter search(String search);
 
 	/**
 	 * Persiste os dados
@@ -223,7 +226,7 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 	}
 
 	@Override
-	public Page<T> getPageAll(Pageable pageable) {
+	public Page<T> getAll(Pageable pageable) {
 		new LogMessagem().printInfoLog(log_listando);
 
 		Page<T> list = null;
@@ -244,23 +247,27 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 	}
 
 	@Override
-	public Page<T> getByFilter(Specification<T> spec) {
+	public Page<T> getByFilter(String search, Pageable pageable) {
 		new LogMessagem().printInfoLog(log_listando);
 
 		Page<T> list = null;
 
 		try {
-			list = (Page<T>) repository.findAll(spec);
-			validarEntidade.validadatorOptional(list);
+			
+			list = repository.findAll(search(search), pageable);
+			//validarEntidade.validadatorOptional(list);
+
 		} catch (Exception e) {
 			new LogMessagem().printErrorLog(e);
 			throw new AppException(log_listando, e);
+
 		}
 
 		new LogMessagem().printInfoLog(log_sucesso);
 		return list;
 	}
 
+	
 	@Override
 	public Page<T> getByFilter(Specification<T> spec, Pageable pageable) {
 		new LogMessagem().printInfoLog(log_listando);

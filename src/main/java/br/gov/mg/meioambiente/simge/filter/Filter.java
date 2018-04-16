@@ -2,6 +2,8 @@ package br.gov.mg.meioambiente.simge.filter;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import br.gov.mg.meioambiente.simge.entity.BaseEntity;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -22,7 +24,7 @@ import java.util.List;
  * "comparison": "gt"
  * }]
  */
-public class Filter implements Specification {
+public class Filter<T extends BaseEntity<?>> implements Specification<T> {
 
     List<Condition> conditions;
 

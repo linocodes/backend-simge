@@ -18,11 +18,11 @@ public class Tag extends BaseEntity<Long> {
 	private static final long serialVersionUID = -7655961997031546542L;
 
 	@NaturalId
-	@Column(nullable=false)	
+	@Column(nullable = false)
 	private String name;
 
 	@NaturalId
-	@Column(nullable=false)	
+	@Column(nullable = false)
 	private String sobrenome;
 
 	public String getName() {
@@ -31,6 +31,14 @@ public class Tag extends BaseEntity<Long> {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getSobrenome() {
+		return sobrenome;
+	}
+
+	public void setSobrenome(String sobrenome) {
+		this.sobrenome = sobrenome;
 	}
 
 }
