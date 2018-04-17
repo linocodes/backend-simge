@@ -51,5 +51,11 @@ public class InstituicaoService extends AbstractService<Instituicao, Long> {
 		return null;
 	}
 
+	@Override
+	void entityUpdate(Instituicao origem, Instituicao destino) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

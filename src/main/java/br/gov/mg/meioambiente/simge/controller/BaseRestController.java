@@ -7,8 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -26,8 +24,6 @@ import br.gov.mg.meioambiente.simge.entity.BaseEntity;
 import br.gov.mg.meioambiente.simge.service.AbstractService;
 
 public abstract class BaseRestController<T, PK extends Serializable> extends AbstractRestHandler {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(BaseRestController.class);
 
 	private AbstractService<T, PK> service;
 
@@ -69,14 +65,14 @@ public abstract class BaseRestController<T, PK extends Serializable> extends Abs
 			// ParametrosInvalidosExceptionSade(MensagensErro.getAtributosInvalidos(errors));
 		}
 
-		checkResourceFound(this.service.getById(id));
+		//checkResourceFound(this.service.getById(id));
 
 		if (!((BaseEntity<T>) entity).getId().equals(id)) {
 			// throw new ParametrosInvalidosExceptionSade("id");
 		}
 
-		this.service.update(entity);
-		return new ResponseEntity<T>(this.service.getById(id), HttpStatus.OK);
+		T registro = this.service.update(entity);
+		return new ResponseEntity<T>(registro, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "deleteID/{id}", method = RequestMethod.DELETE)
@@ -110,15 +106,17 @@ public abstract class BaseRestController<T, PK extends Serializable> extends Abs
 		} else {
 			page = this.service.getByFilter(search, pageable);
 		}
-		
+
 		return new ResponseEntity<Page<T>>(page, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/listfilter", method = RequestMethod.GET, produces = { "application/json", "application/xml" })
+	@RequestMapping(value = "/listfilter", method = RequestMethod.GET, produces = { "application/json",
+			"application/xml" })
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<List<T>> getAll(HttpServletRequest request, HttpServletResponse response) {
-return null;
-		//return new ResponseEntity<List<T>>(this.service.getByFilter(spec, pageable) getAll(), HttpStatus.OK);
+		return null;
+		// return new ResponseEntity<List<T>>(this.service.getByFilter(spec, pageable)
+		// getAll(), HttpStatus.OK);
 	}
 
 }

@@ -58,6 +58,12 @@ public class UsuarioService  extends AbstractService<Usuario, Long> {
 	Filter search(String search) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	void entityUpdate(Usuario origem, Usuario destino) {
+		// TODO Auto-generated method stub
+		
 	}	
 	
 	

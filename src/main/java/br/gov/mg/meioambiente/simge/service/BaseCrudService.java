@@ -17,6 +17,8 @@ public interface BaseCrudService<T, PK extends Serializable> {
 
 	T update(T entity);
 	
+	T update(T entity, PK id);	
+	
 	T getById(PK id);
 	
 	T getById(T entity, PK id);	

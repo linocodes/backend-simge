@@ -7,21 +7,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.group.GroupSequenceProvider;
 
 @Entity(name = "Tag")
 @Table(name = "tag")
+@DynamicUpdate
 @AttributeOverride(name = "id", column = @Column(name = "tag_id", nullable = false, columnDefinition = "BIGINT UNSIGNED"))
 public class Tag extends BaseEntity<Long> {
 
 	private static final long serialVersionUID = -7655961997031546542L;
 
-	@NaturalId
 	@Column(nullable = false)
 	private String name;
 
-	@NaturalId
 	@Column(nullable = false)
 	private String sobrenome;
 

@@ -50,5 +50,11 @@ public class NoteService extends AbstractService<Note, Long> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	void entityUpdate(Note origem, Note destino) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

@@ -62,4 +62,10 @@ public class HotelService extends AbstractService<Hotel, Long> {
 		return null;
 	}
 
+	@Override
+	void entityUpdate(Hotel origem, Hotel destino) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

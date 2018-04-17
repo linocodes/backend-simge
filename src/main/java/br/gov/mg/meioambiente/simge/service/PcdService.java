@@ -51,4 +51,10 @@ public class PcdService extends AbstractService<Pcd, Long> {
 		return null;
 	}
 
+	@Override
+	void entityUpdate(Pcd origem, Pcd destino) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

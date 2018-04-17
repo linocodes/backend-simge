@@ -74,8 +74,10 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 	 * Depois de deletar o registro
 	 */
 	abstract void afterDelete(T entity);
-	
+
 	abstract Filter search(String search);
+	
+	abstract void entityUpdate(T origem, T destino);
 
 	/**
 	 * Persiste os dados
@@ -148,14 +150,22 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 
 		new LogMessagem().printInfoLogWithId(log_editando, entity.getClass().getSimpleName());
 
-		if (isValidacao(entity)) {
-			beforeUpdate(entity);
+		T entityAtual = repository.findOne( ((BaseEntity<PK>) entity).getId() ); 
+
+        if (entityAtual == null) {
+            throw new NotFoundException("resource not found");
+        } else {
+        	entityUpdate(entityAtual,entity);	
+        }		
+
+		if (isValidacao(entityAtual)) {
+			beforeUpdate(entityAtual);
 		}
+		
+        try {
 
-		try {
-
-			repository.saveAndFlush(entity);
-			afterUpdate(entity);
+			repository.saveAndFlush(entityAtual);
+			afterUpdate(entityAtual);
 
 		} catch (Exception e) {
 			new LogMessagem().printErrorLog(e);
@@ -163,7 +173,39 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 		}
 
 		new LogMessagem().printInfoLog(log_sucesso);
-		return entity;
+		return entityAtual;
+
+	}
+
+	@Override
+	public T update(T entity, PK id) {
+
+		new LogMessagem().printInfoLogWithId(log_editando, entity.getClass().getSimpleName());
+		
+		T entityAtual = repository.findOne(id); 
+
+        if (entityAtual == null) {
+            throw new NotFoundException("resource not found");
+        } else {
+        	entityUpdate(entityAtual,entity);	
+        }
+        
+		if (isValidacao(entityAtual)) {
+			beforeUpdate(entityAtual);
+		}
+
+		try {
+
+			repository.saveAndFlush(entityAtual);
+			afterUpdate(entityAtual);
+
+		} catch (Exception e) {
+			new LogMessagem().printErrorLog(e);
+			throw new AppException(log_editando, e);
+		}
+
+		new LogMessagem().printInfoLog(log_sucesso);
+		return entityAtual;
 
 	}
 
@@ -234,7 +276,7 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 		try {
 
 			list = repository.findAll(pageable);
-			//validarEntidade.validadatorOptional(list);
+			// validarEntidade.validadatorOptional(list);
 
 		} catch (Exception e) {
 			new LogMessagem().printErrorLog(e);
@@ -253,9 +295,9 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 		Page<T> list = null;
 
 		try {
-			
+
 			list = repository.findAll(search(search), pageable);
-			//validarEntidade.validadatorOptional(list);
+			// validarEntidade.validadatorOptional(list);
 
 		} catch (Exception e) {
 			new LogMessagem().printErrorLog(e);
@@ -267,7 +309,6 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 		return list;
 	}
 
-	
 	@Override
 	public Page<T> getByFilter(Specification<T> spec, Pageable pageable) {
 		new LogMessagem().printInfoLog(log_listando);

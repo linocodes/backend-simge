@@ -54,6 +54,13 @@ public class TagService extends AbstractService<Tag, Long> {
 	}
 
 	@Override
+	void entityUpdate(Tag origem, Tag destino) {
+		if (!destino.getName().isEmpty()) {
+			origem.setName(destino.getName());
+		}
+	}
+
+	@Override
 	Filter<Tag> search(String search) {
 		Filter<Tag> filter = new Filter<Tag>();
 		filter.addCondition(
