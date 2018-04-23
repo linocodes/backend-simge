@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.gov.mg.meioambiente.simge.entity.AppUser;
-import br.gov.mg.meioambiente.simge.repository.UserRepository;
+import br.gov.mg.meioambiente.simge.repository.AppUserRepository;
 
 import java.util.ArrayList;
 import java.util.List;

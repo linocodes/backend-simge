@@ -1,9 +1,8 @@
 package br.gov.mg.meioambiente.simge.repository;
 
+import org.springframework.stereotype.Repository;
+import br.gov.mg.meioambiente.simge.entity.User;
 
-import org.springframework.data.repository.CrudRepository;
-
-import br.gov.mg.meioambiente.simge.entity.AppUser;
-
-public interface UserRepository extends CrudRepository<AppUser, Long> {
+@Repository
+public interface UserRepository extends BaseRepository<User, Long> {
 }
