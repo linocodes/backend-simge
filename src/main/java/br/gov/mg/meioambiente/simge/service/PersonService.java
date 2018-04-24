@@ -31,6 +31,13 @@ public class PersonService {
     //    Page<User> userPage = userRepository.findAll(userListSpecification.getFilter(request), pageable);
     //    return Either.right(userPage.map(userMapper::map));
     //}
+    /*
+    Person example = new Person();
+    example.setLastName("James");
+    example.setEmployed(true);
+    PersonSpec personSpec = new PersonSpec(example);
+    List<Person> persons = personRepository.findAll(personSpec);  
+    */  
     
             
 }

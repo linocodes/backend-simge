@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.9.RELEASE</version>
+		<version>2.0.0.RELEASE</version>
 		<relativePath />
 	</parent>
 
@@ -24,8 +24,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<aspectj.version>1.8.9</aspectj.version>
-        <io.vavr.version>0.9.1</io.vavr.version>
-        <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>		
+		<io.vavr.version>0.9.1</io.vavr.version>
+		<org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
 	</properties>
 
 	<dependencies>
@@ -81,6 +81,34 @@
 					<artifactId>spring-boot-starter-tomcat</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-log4j2</artifactId> 
+			</dependency> -->
+
+<!-- 
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.10.0</version>
+		</dependency>
+		-->
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -143,19 +171,16 @@
 			<artifactId>vavr</artifactId>
 			<version>${io.vavr.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId> <!-- OR use this with Java 8 and beyond: <artifactId>mapstruct-jdk8</artifactId> -->
 			<version>${org.mapstruct.version}</version>
 		</dependency>
-		
-    <dependency>
-        <groupId>org.springframework.data</groupId>
-        <artifactId>spring-data-commons</artifactId>
-        <version>1.12.1.RELEASE</version>
-    </dependency>		
-		
+
+		<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-commons</artifactId> 
+			</dependency> -->
+
 
 	</dependencies>
 

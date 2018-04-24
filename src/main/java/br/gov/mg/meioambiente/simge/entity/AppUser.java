@@ -1,22 +1,17 @@
 package br.gov.mg.meioambiente.simge.entity;
 
+import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
+
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
 @RequiredArgsConstructor
-public class AppUser {
+public class AppUser extends BaseEntity<Long> {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private static final long serialVersionUID = 1L;
 
 	@NotNull
 	private String username;

@@ -9,6 +9,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -29,11 +30,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import br.gov.mg.meioambiente.simge.componentes.JNDIProperties;
-
 @Configuration
 @EnableTransactionManagement
-@PropertySource("classpath:jndi.properties")
+//@EnableConfigurationProperties(JndiProperties.class)
+//@PropertySource("classpath:jndi.properties")
 //@Configuration
 //@EnableWebMvc
 //@ComponentScan(basePackages = "br.gov.mg.meioambiente.simge")
@@ -43,8 +43,8 @@ import br.gov.mg.meioambiente.simge.componentes.JNDIProperties;
 //		transactionManagerRef = "transactionManager")
 public class ApplicationConfig extends WebMvcConfigurerAdapter {
 	
-	@Autowired	
-	private JNDIProperties jndi;
+	@Autowired
+	private JndiProperties jndi;
 
 	@Autowired
 	private Environment env;
@@ -57,7 +57,8 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter {
 
 	private JndiDataSourceLookup lookup = new JndiDataSourceLookup();
 
-	public ApplicationConfig(JNDIProperties jndi) {
+
+	public ApplicationConfig(JndiProperties jndi) {
 		this.jndi = jndi;
 	}	
 

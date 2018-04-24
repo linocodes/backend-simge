@@ -2,6 +2,7 @@ package br.gov.mg.meioambiente.simge.service;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -150,22 +151,22 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 
 		new LogMessagem().printInfoLogWithId(log_editando, entity.getClass().getSimpleName());
 
-		T entityAtual = repository.findOne( ((BaseEntity<PK>) entity).getId() ); 
+		Optional<T> entityAtual = repository.findById( ((BaseEntity<PK>) entity).getId() ); 
 
-        if (entityAtual == null) {
+        if (entityAtual.get() == null) {
             throw new NotFoundException("resource not found");
         } else {
-        	entityUpdate(entityAtual,entity);	
+        	entityUpdate(entityAtual.get(),entity);	
         }		
 
-		if (isValidacao(entityAtual)) {
-			beforeUpdate(entityAtual);
+		if (isValidacao(entityAtual.get())) {
+			beforeUpdate(entityAtual.get());
 		}
 		
         try {
 
-			repository.saveAndFlush(entityAtual);
-			afterUpdate(entityAtual);
+			repository.saveAndFlush(entityAtual.get());
+			afterUpdate(entityAtual.get());
 
 		} catch (Exception e) {
 			new LogMessagem().printErrorLog(e);
@@ -173,7 +174,7 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 		}
 
 		new LogMessagem().printInfoLog(log_sucesso);
-		return entityAtual;
+		return entityAtual.get();
 
 	}
 
@@ -182,22 +183,22 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 
 		new LogMessagem().printInfoLogWithId(log_editando, entity.getClass().getSimpleName());
 		
-		T entityAtual = repository.findOne(id); 
+		Optional<T> entityAtual = repository.findById(id);		
 
-        if (entityAtual == null) {
+        if (entityAtual.get() == null) {
             throw new NotFoundException("resource not found");
         } else {
-        	entityUpdate(entityAtual,entity);	
+        	entityUpdate(entityAtual.get(),entity);	
         }
         
-		if (isValidacao(entityAtual)) {
-			beforeUpdate(entityAtual);
+		if (isValidacao(entityAtual.get())) {
+			beforeUpdate(entityAtual.get());
 		}
 
 		try {
 
-			repository.saveAndFlush(entityAtual);
-			afterUpdate(entityAtual);
+			repository.saveAndFlush(entityAtual.get());
+			afterUpdate(entityAtual.get());
 
 		} catch (Exception e) {
 			new LogMessagem().printErrorLog(e);
@@ -205,7 +206,7 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 		}
 
 		new LogMessagem().printInfoLog(log_sucesso);
-		return entityAtual;
+		return entityAtual.get();
 
 	}
 
@@ -232,8 +233,8 @@ public abstract class AbstractService<T, PK extends Serializable> implements Bas
 		new LogMessagem().printInfoLogWithId(log_pesquisando, entity.getClass().getSimpleName(), id);
 
 		try {
-			entity = repository.findOne(id);
-			validarEntidade.validadatorOptional(entity);
+			Optional<T> registro = repository.findById(id);
+			validarEntidade.validadatorOptional(registro.get());
 		} catch (Exception e) {
 			new LogMessagem().printErrorLog(e);
 			throw new AppException(log_pesquisando, e);

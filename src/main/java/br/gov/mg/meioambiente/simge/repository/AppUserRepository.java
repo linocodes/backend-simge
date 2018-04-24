@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 import br.gov.mg.meioambiente.simge.entity.AppUser;
 
-public interface AppUserRepository extends CrudRepository<AppUser, Long> {
+public interface AppUserRepository extends BaseRepository<AppUser, Long> {
 }

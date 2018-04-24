@@ -1,5 +1,7 @@
 package br.gov.mg.meioambiente.simge.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -67,5 +69,6 @@ public class HotelService extends AbstractService<Hotel, Long> {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

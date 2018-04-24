@@ -4,4 +4,4 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import br.gov.mg.meioambiente.simge.entity.Person;
 
-public interface PersonRepository extends JpaRepository<Person, Long>, JpaSpecificationExecutor {}
+public interface PersonRepository extends BaseRepository<Person, Long> {}

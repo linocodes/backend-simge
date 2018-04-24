@@ -2,6 +2,8 @@ package br.gov.mg.meioambiente.simge;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -74,7 +76,7 @@ public class MyJPAUnitTest {
 		Customer customer2 = new Customer("Adam", "Johnson");
 		entityManager.persist(customer2);
 
-		Customer foundCustomer = repository.findOne(customer2.getId());
+		Optional<Customer> foundCustomer = repository.findById(customer2.getId());
 
 		assertThat(foundCustomer).isEqualTo(customer2);
 	}

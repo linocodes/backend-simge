@@ -3,14 +3,9 @@ package br.gov.mg.meioambiente.simge.entity;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.NaturalId;
-import org.hibernate.validator.group.GroupSequenceProvider;
 
 @Entity(name = "Tag")
 @Table(name = "tag")

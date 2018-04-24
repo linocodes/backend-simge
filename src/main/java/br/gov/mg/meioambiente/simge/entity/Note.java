@@ -4,6 +4,7 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity

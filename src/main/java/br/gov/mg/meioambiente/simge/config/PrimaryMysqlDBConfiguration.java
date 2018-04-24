@@ -9,7 +9,7 @@ import javax.naming.NamingException;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+//import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
